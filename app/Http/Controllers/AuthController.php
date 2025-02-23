@@ -11,31 +11,26 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    // Show Login Page (For Blade)
     public function showLogin()
     {
         return view('auth.login');
     }
 
-    // Show Register Page (For Blade)
     public function showRegister()
     {
         return view('auth.register');
     }
 
-    // Show Forgot Password Page (For Blade)
     public function showForgotPassword()
     {
         return view('auth.forgot-password');
     }
 
-    // Show Reset Password Page (For Blade)
     public function showResetPassword()
     {
         return view('auth.reset-password');
     }
 
-    // Register (For API & Blade)
     public function register(Request $request)
     {
         $request->validate([
@@ -58,7 +53,6 @@ class AuthController extends Controller
         return redirect()->route('auth.login')->with('success', 'Registration successful! Please log in.');
     }
 
-    // Login (For API & Blade)
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
@@ -71,7 +65,6 @@ class AuthController extends Controller
                 return response()->json(['token' => $token, 'user' => $user]);
             }
 
-            // Redirect based on role
             if ($user->role === 'admin') {
                 return redirect()->route('admin.dashboard');
             } elseif ($user->role === 'manager') {
@@ -88,7 +81,6 @@ class AuthController extends Controller
         return redirect()->back()->with('error', 'Invalid credentials');
     }
 
-    // Forgot Password (OTP via Email)
     public function forgotPassword(Request $request)
     {
         $request->validate(['email' => 'required|email']);
@@ -102,7 +94,6 @@ class AuthController extends Controller
         $otp = rand(100000, 999999);
         $user->update(['otp' => $otp]);
 
-        // Send OTP via email
         Mail::raw("Your OTP is: $otp", function ($message) use ($user) {
             $message->to($user->email)->subject('Password Reset OTP');
         });
@@ -114,7 +105,6 @@ class AuthController extends Controller
         return redirect()->route('auth.reset')->with('success', 'OTP sent to your email. Enter it to reset your password.');
     }
 
-    // Reset Password using OTP
     public function resetPassword(Request $request)
     {
         $request->validate([
@@ -138,16 +128,14 @@ class AuthController extends Controller
         return redirect()->route('auth.login')->with('success', 'Password reset successful! Please log in.');
     }
 
-    // Get Logged-in User Profile (For API)
     public function profile()
     {
         return response()->json(auth()->user());
     }
 
-    // Logout (For Blade & API)
     public function logout(Request $request)
     {
-        Auth::logout(); // Logout for both API & Web
+        Auth::logout(); 
 
         if ($request->expectsJson()) {
             return response()->json(['message' => 'User logged out successfully']);

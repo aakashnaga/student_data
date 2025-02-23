@@ -9,26 +9,22 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    // Middleware to restrict access
     public function __construct()
     {
         $this->middleware('auth');
     }
 
-    // Show Users List
     public function index()
     {
         $users = User::paginate(10);
         return view('admin.users.index', compact('users'));
     }
 
-    // Show Create User Form
     public function create()
     {
         return view('admin.users.create');
     }
 
-    // Store New User
     public function store(Request $request)
     {
         $request->validate([
@@ -48,13 +44,11 @@ class UserController extends Controller
         return redirect()->route('admin.users.index')->with('success', 'User created successfully.');
     }
 
-    // Show Edit User Form
     public function edit(User $user)
     {
         return view('admin.users.edit', compact('user'));
     }
 
-    // Update User
     public function update(Request $request, User $user)
     {
         $request->validate([
@@ -70,7 +64,6 @@ class UserController extends Controller
         return redirect()->route('admin.users.index')->with('success', 'User updated successfully.');
     }
 
-    // Delete User
     public function destroy(User $user)
     {
         $user->delete();
@@ -83,14 +76,12 @@ class UserController extends Controller
         return back()->with('success', 'User moved to trash.');
     }
 
-    // Restore user (set deleted_at = 0)
     public function restore(User $user)
     {
         $user->update(['deleted_at' => 0]);
         return back()->with('success', 'User restored successfully.');
     }
 
-    // Permanently delete user
     public function permanentDelete(User $user)
     {
         try {
