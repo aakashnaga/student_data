@@ -29,6 +29,13 @@
             </div>
             <button type="submit" class="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600">Register</button>
         </form>
+
+        <!-- Already have an account? -->
+        <div class="mt-4 text-center">
+            <p class="text-gray-600">Already have an account? 
+                <a href="{{ route('auth.login') }}" class="text-blue-500 hover:underline">Login</a>
+            </p>
+        </div>
     </div>
 </div>
 @endsection
