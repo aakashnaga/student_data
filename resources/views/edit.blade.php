@@ -80,76 +80,6 @@
         background-color: #0056b3;
     }
 </style>
-
-<div class="container">
-    <h2>Edit User</h2>
-
-    <!-- Show Validation Errors -->
-    @if ($errors->any())
-        <div class="error">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    <!-- Success Message -->
-    @if (session('success'))
-        <p class="success">{{ session('success') }}</p>
-    @endif
-
-    <form action="{{ url('/users/'.$user->id) }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        @method('PUT')
-
-        <label>Name:</label>
-        <input type="text" name="name" value="{{ $user->name }}" required>
-
-        <label>Email:</label>
-        <input type="email" name="email" value="{{ $user->email }}" required>
-
-        <label>Age:</label>
-        <input type="number" name="age" value="{{ $user->age }}" required>
-
-        <label>Address:</label>
-        <input type="text" name="address" value="{{ $user->address }}" required>
-
-        <!-- Image Upload -->
-        <label>Profile Image:</label>
-        @if($user->image)
-            <img src="{{ asset('uploads/'.$user->image) }}">
-        @endif
-        <input type="file" name="image">
-
-        <!-- Document Upload -->
-        <label>Document:</label>
-        @if($user->document)
-            <a href="{{ asset('uploads/'.$user->document) }}" target="_blank">View Document</a>
-        @endif
-        <input type="file" name="document">
-
-        <!-- Subjects -->
-        <h3>Subject Marks</h3>
-        <div id="subjects">
-            @foreach ($user->subjects as $index => $subject)
-                <div class="subject-group">
-                    <input type="text" name="subjects[{{ $index }}][name]" value="{{ $subject['name'] }}" required>
-                    <input type="number" name="subjects[{{ $index }}][marks]" value="{{ $subject['marks'] }}" required>
-                </div>
-            @endforeach
-        </div>
-        <button type="button" onclick="addSubjectField()">Add Subject Marks</button>
-
-        <button type="submit">Update</button>
-    </form>
-
-    <a href="{{ url('/users') }}" class="back-btn">
-        <button class="back-btn">Back to Users List</button>
-    </a>
-</div>
-
 <script>
 function addSubjectField() {
     let subjectDiv = document.getElementById('subjects');
@@ -163,4 +93,75 @@ function addSubjectField() {
     subjectDiv.insertAdjacentHTML('beforeend', html);
 }
 </script>
+<div class="container">
+    <h2>Edit User</h2>
+
+    @if ($errors->any())
+        <div class="error">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+
+    @if (session('success'))
+        <p class="success">{{ session('success') }}</p>
+    @endif
+
+    <form action="{{ url('/users/'.$user->id) }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        @method('POST')
+
+        <label>Name:</label>
+        <input type="text" name="name" value="{{ $user->name }}" required>
+
+        <label>Email:</label>
+        <input type="email" name="email" value="{{ $user->email }}" required>
+
+        <label>Age:</label>
+        <input type="number" name="age" value="{{ $user->age }}" required>
+
+        <label>Address:</label>
+        <input type="text" name="address" value="{{ $user->address }}" required>
+
+       
+        <label>Profile Image:</label>
+        @if($user->image)
+            <img src="{{ asset('uploads/'.$user->image) }}">
+        @endif
+        <input type="file" name="image">
+
+       
+        <label>Document:</label>
+        @if($user->document)
+            <a href="{{ asset('uploads/'.$user->document) }}" target="_blank">View Document</a>
+        @endif
+        <input type="file" name="document">
+
+       
+        <h3>Subject Marks</h3>
+        <div id="subjects">
+        @if($user->subjects)
+            @foreach ($user->subjects as $index => $subject)
+                <div class="subject-group">
+                    <input type="text" name="subjects[{{ $index }}][name]" value="{{ $subject['name'] }}" required>
+                    <input type="number" name="subjects[{{ $index }}][marks]" value="{{ $subject['marks'] }}" required>
+                </div>
+            @endforeach
+        </div>
+        @endif
+        <button type="button" onclick="addSubjectField()">Add Subject Marks</button>
+ 
+        <button type="submit">Update</button>
+    </form>
+
+    <a href="{{ url('/users') }}" class="back-btn">
+        <button class="back-btn">Back to Users List</button>
+    </a>
+</div>
+
+
 
