@@ -130,14 +130,14 @@ function addSubjectField() {
        
         <label>Profile Image:</label>
         @if($user->image)
-            <img src="{{ asset('uploads/'.$user->image) }}">
+        <img src="{{ asset('storage/' . $user->image) }}" alt="Profile Image" width="100">
         @endif
         <input type="file" name="image">
 
        
         <label>Document:</label>
         @if($user->document)
-            <a href="{{ asset('uploads/'.$user->document) }}" target="_blank">View Document</a>
+            <a href="{{ asset('storage/'.$user->document) }}" target="_blank">View Document</a>
         @endif
         <input type="file" name="document">
 

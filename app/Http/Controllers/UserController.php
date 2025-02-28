@@ -89,18 +89,14 @@ class UserController extends Controller
         $user->address = $request->address;
 
         if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $image->move(public_path('uploads'), $imageName);
-            $user->image = $imageName;
+            $user->image = $request->file('image')->store('uploads/images', 'public');
+            
         }
 
         if ($request->hasFile('document')) {
-            $document = $request->file('document');
-            $documentName = time() . '_' . $document->getClientOriginalName();
-            $document->move(public_path('uploads'), $documentName);
-            $user->document = $documentName;
+            $user->document = $request->file('document')->store('uploads/documents', 'public');
         }
+        
         $user->subjects = $request->subjects;
         $user->save();
 
